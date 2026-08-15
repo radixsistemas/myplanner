@@ -1,0 +1,350 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum GlobalRole {
+  ADMIN
+  MEMBER
+}
+
+enum TeamRole {
+  MANAGER
+  COLLABORATOR
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum Horizon {
+  SHORT
+  MEDIUM
+  LONG
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum RoadmapStatus {
+  PLANEJADO
+  EM_ANALISE
+  INICIADO
+  PAUSADO
+  CANCELADO
+  CONCLUIDO
+}
+
+enum PhaseStatus {
+  PLANEJADA
+  EM_ANDAMENTO
+  CONCLUIDA
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+  BLOCKED
+}
+
+enum EntityType {
+  ROADMAP_ITEM
+  PROJECT
+  TASK
+}
+
+enum ActivityType {
+  COMMENT
+  STATUS_CHANGE
+  FIELD_UPDATE
+  TASK_COMPLETED
+  PHASE_UPDATE
+  CREATED
+}
+
+enum StallScope {
+  GLOBAL
+  TEAM
+}
+
+// ---------------------------------------------------------------------------
+// Usuários, times e permissões
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  globalRole   GlobalRole @default(MEMBER)
+  theme        Theme      @default(SYSTEM)
+  avatarUrl    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  refreshTokens          RefreshToken[]
+  teamMemberships        TeamMember[]
+  notificationPreference NotificationPreference?
+  dashboardTeams         DashboardTeamPreference[]
+
+  ownedRoadmapItems   RoadmapItem[] @relation("RoadmapItemOwner")
+  createdRoadmapItems RoadmapItem[] @relation("RoadmapItemCreatedBy")
+  ownedProjects       Project[]     @relation("ProjectOwner")
+  assignedTasks       Task[]        @relation("TaskAssignee")
+  activityEntries     ActivityEntry[]
+  stallNotifications  StallNotification[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members        TeamMember[]
+  roadmapItems   RoadmapItem[]
+  projects       Project[]
+  stallRules     StallRule[]
+  dashboardPrefs DashboardTeamPreference[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  userId   String
+  teamRole TeamRole @default(COLLABORATOR)
+  joinedAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
+
+model NotificationPreference {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  stallAlertsEmail   Boolean  @default(true)
+  weeklySummaryEmail Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model DashboardTeamPreference {
+  id     String @id @default(cuid())
+  userId String
+  teamId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("dashboard_team_preferences")
+}
+
+// ---------------------------------------------------------------------------
+// Roadmap (visão de longo prazo)
+// ---------------------------------------------------------------------------
+
+model RoadmapItem {
+  id             String        @id @default(cuid())
+  teamId         String
+  title          String
+  description    String?
+  horizon        Horizon
+  targetDate     DateTime?
+  targetQuarter  String?
+  targetYear     Int?
+  ownerId        String
+  priority       Priority      @default(MEDIUM)
+  status         RoadmapStatus @default(PLANEJADO)
+  hasPhases      Boolean       @default(false)
+  lastActivityAt DateTime      @default(now())
+  createdById    String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  team      Team           @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  owner     User           @relation("RoadmapItemOwner", fields: [ownerId], references: [id])
+  createdBy User           @relation("RoadmapItemCreatedBy", fields: [createdById], references: [id])
+  phases    RoadmapPhase[]
+  project   Project?
+
+  @@index([teamId])
+  @@index([status])
+  @@map("roadmap_items")
+}
+
+model RoadmapPhase {
+  id                 String      @id @default(cuid())
+  roadmapItemId      String
+  name               String
+  description        String?
+  order              Int
+  estimatedStartDate DateTime?
+  estimatedEndDate   DateTime?
+  status             PhaseStatus @default(PLANEJADA)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  roadmapItem RoadmapItem @relation(fields: [roadmapItemId], references: [id], onDelete: Cascade)
+
+  @@index([roadmapItemId])
+  @@map("roadmap_phases")
+}
+
+// ---------------------------------------------------------------------------
+// Projetos em andamento (execução)
+// ---------------------------------------------------------------------------
+
+model Project {
+  id             String        @id @default(cuid())
+  teamId         String
+  title          String
+  description    String?
+  status         ProjectStatus @default(ACTIVE)
+  ownerId        String
+  priority       Priority      @default(MEDIUM)
+  roadmapItemId  String?       @unique
+  targetDate     DateTime?
+  startedAt      DateTime      @default(now())
+  lastActivityAt DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  team        Team         @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  owner       User         @relation("ProjectOwner", fields: [ownerId], references: [id])
+  roadmapItem RoadmapItem? @relation(fields: [roadmapItemId], references: [id])
+  tasks       Task[]
+
+  @@index([teamId])
+  @@index([status])
+  @@map("projects")
+}
+
+model Task {
+  id              String     @id @default(cuid())
+  projectId       String
+  parentTaskId    String?
+  title           String
+  description     String?
+  status          TaskStatus @default(TODO)
+  assigneeId      String?
+  dueDate         DateTime?
+  priority        Priority   @default(MEDIUM)
+  progressPercent Int        @default(0)
+  position        Int        @default(0)
+  lastActivityAt  DateTime   @default(now())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  project    Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  parentTask Task?   @relation("TaskSubtasks", fields: [parentTaskId], references: [id], onDelete: Cascade)
+  subtasks   Task[]  @relation("TaskSubtasks")
+  assignee   User?   @relation("TaskAssignee", fields: [assigneeId], references: [id])
+
+  @@index([projectId])
+  @@index([parentTaskId])
+  @@index([assigneeId])
+  @@map("tasks")
+}
+
+// ---------------------------------------------------------------------------
+// Atividade / comentários (alimenta lastActivityAt e a detecção de estagnação)
+// ---------------------------------------------------------------------------
+
+model ActivityEntry {
+  id         String       @id @default(cuid())
+  entityType EntityType
+  entityId   String
+  userId     String
+  type       ActivityType
+  body       String?
+  metadata   Json?
+  createdAt  DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([entityType, entityId])
+  @@map("activity_entries")
+}
+
+// ---------------------------------------------------------------------------
+// Detecção de estagnação
+// ---------------------------------------------------------------------------
+
+model StallRule {
+  id                  String     @id @default(cuid())
+  scope               StallScope
+  teamId              String?
+  tolerancePercent    Float      @default(0.15)
+  minToleranceDays    Int        @default(7)
+  maxToleranceDays    Int        @default(45)
+  reminderIntervalDays Int       @default(7)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  team Team? @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([scope, teamId])
+  @@map("stall_rules")
+}
+
+model StallNotification {
+  id              String     @id @default(cuid())
+  entityType      EntityType
+  entityId        String
+  recipientUserId String
+  sentAt          DateTime   @default(now())
+
+  recipient User @relation(fields: [recipientUserId], references: [id], onDelete: Cascade)
+
+  @@index([entityType, entityId, recipientUserId])
+  @@map("stall_notifications")
+}
