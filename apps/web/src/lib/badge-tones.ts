@@ -1,4 +1,4 @@
-import type { Priority, ProjectStatus, RoadmapStatus, TaskStatus } from "@mapa-expansao/shared";
+import type { Priority, ProjectStatus, RoadmapStatus, TaskStatus } from "@myplanner/shared";
 import type { Tone } from "../components/ui/Badge";
 
 export const priorityTone: Record<Priority, Tone> = {

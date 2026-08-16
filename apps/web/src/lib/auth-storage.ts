@@ -1,5 +1,5 @@
-const ACCESS_TOKEN_KEY = "mapa_expansao_access_token";
-const REFRESH_TOKEN_KEY = "mapa_expansao_refresh_token";
+const ACCESS_TOKEN_KEY = "myplanner_access_token";
+const REFRESH_TOKEN_KEY = "myplanner_refresh_token";
 
 export const authStorage = {
   getAccessToken: () => localStorage.getItem(ACCESS_TOKEN_KEY),

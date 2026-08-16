@@ -18,7 +18,7 @@ const envSchema = z.object({
   SMTP_SECURE: z.coerce.boolean().default(false),
   SMTP_USER: z.string().default(""),
   SMTP_PASSWORD: z.string().default(""),
-  EMAIL_FROM: z.string().default("Mapa de Expansão <notificacoes@example.com>"),
+  EMAIL_FROM: z.string().default("MyPlanner <notificacoes@example.com>"),
   EMAIL_DRY_RUN: z.coerce.boolean().default(true),
 
   STALL_CHECK_CRON: z.string().default("0 8 * * *"),

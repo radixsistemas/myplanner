@@ -1,4 +1,4 @@
-import { computeStallStatus } from "@mapa-expansao/shared";
+import { computeStallStatus } from "@myplanner/shared";
 import { prisma } from "../../lib/prisma";
 import { getEffectiveRule } from "./stall-rules.service";
 import { notifyStalled } from "../notifications/notifications.service";

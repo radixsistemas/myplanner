@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PRIORITY_LABELS, TASK_STATUS_LABELS } from "@mapa-expansao/shared";
+import { PRIORITY_LABELS, TASK_STATUS_LABELS } from "@myplanner/shared";
 import { Badge } from "../../components/ui/Badge";
 import { ProgressBar } from "../../components/ui/ProgressBar";
 import { priorityTone, taskStatusTone } from "../../lib/badge-tones";

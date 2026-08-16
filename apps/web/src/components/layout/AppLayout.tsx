@@ -18,7 +18,7 @@ export function AppLayout() {
     <div className="flex min-h-screen">
       <aside className="hidden w-56 shrink-0 border-r border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-900 md:block">
         <div className="mb-8 px-2">
-          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Mapa de Expansão</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">MyPlanner</p>
           <p className="text-xs text-slate-500 dark:text-slate-400">Roadmap &amp; Projetos</p>
         </div>
         <nav className="space-y-1">
@@ -44,7 +44,7 @@ export function AppLayout() {
 
       <div className="flex min-w-0 flex-1 flex-col pb-14 md:pb-0">
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 md:px-6">
-          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 md:hidden">Mapa de Expansão</div>
+          <div className="text-sm font-semibold text-slate-900 dark:text-slate-100 md:hidden">MyPlanner</div>
           <div className="ml-auto flex items-center gap-3">
             <button
               type="button"

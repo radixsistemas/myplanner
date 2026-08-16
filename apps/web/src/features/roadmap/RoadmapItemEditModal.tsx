@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import type { Horizon, Priority, RoadmapStatus } from "@mapa-expansao/shared";
-import { HORIZON_LABELS, PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@mapa-expansao/shared";
+import type { Horizon, Priority, RoadmapStatus } from "@myplanner/shared";
+import { HORIZON_LABELS, PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@myplanner/shared";
 import { Modal } from "../../components/ui/Modal";
 import { Field } from "../../components/ui/Field";
 import { Input, Select, Textarea } from "../../components/ui/Input";

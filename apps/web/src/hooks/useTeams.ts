@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { TeamRole } from "@mapa-expansao/shared";
+import type { TeamRole } from "@myplanner/shared";
 import { api } from "../lib/api";
 import type { Team } from "../types/api";
 

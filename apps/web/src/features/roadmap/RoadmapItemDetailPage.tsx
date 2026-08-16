@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { HORIZON_LABELS, PHASE_STATUS_LABELS, PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@mapa-expansao/shared";
-import type { PhaseStatus } from "@mapa-expansao/shared";
+import { HORIZON_LABELS, PHASE_STATUS_LABELS, PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@myplanner/shared";
+import type { PhaseStatus } from "@myplanner/shared";
 import {
   useAddPhase,
   useDeletePhase,

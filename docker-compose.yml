@@ -1,16 +1,16 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: mapa-expansao-postgres
+    container_name: myplanner-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: mapa_expansao
-      POSTGRES_PASSWORD: mapa_expansao
-      POSTGRES_DB: mapa_expansao
+      POSTGRES_USER: myplanner
+      POSTGRES_PASSWORD: myplanner
+      POSTGRES_DB: myplanner
     ports:
       - "5432:5432"
     volumes:
-      - mapa_expansao_postgres_data:/var/lib/postgresql/data
+      - myplanner_postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mapa_expansao_postgres_data:
+  myplanner_postgres_data:

@@ -10,7 +10,7 @@ import type {
   TaskStatus,
   TeamRole,
   Theme,
-} from "@mapa-expansao/shared";
+} from "@myplanner/shared";
 
 export interface PublicUser {
   id: string;

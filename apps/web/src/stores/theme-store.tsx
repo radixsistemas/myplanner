@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import type { Theme } from "@mapa-expansao/shared";
+import type { Theme } from "@myplanner/shared";
 
-const STORAGE_KEY = "mapa_expansao_theme";
+const STORAGE_KEY = "myplanner_theme";
 
 interface ThemeContextValue {
   theme: Theme;

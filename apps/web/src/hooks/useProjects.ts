@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Priority, ProjectStatus } from "@mapa-expansao/shared";
+import type { Priority, ProjectStatus } from "@myplanner/shared";
 import { api } from "../lib/api";
 import type { Project } from "../types/api";
 

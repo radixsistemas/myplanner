@@ -35,7 +35,7 @@ export function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 dark:bg-slate-950">
       <div className="w-full max-w-sm">
         <div className="mb-6 text-center">
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Mapa de Expansão</h1>
+          <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-100">MyPlanner</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">Criar sua conta</p>
         </div>
         <form

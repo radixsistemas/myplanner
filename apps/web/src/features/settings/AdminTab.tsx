@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { GlobalRole, TeamRole } from "@mapa-expansao/shared";
+import type { GlobalRole, TeamRole } from "@myplanner/shared";
 import { useAddTeamMember, useCreateTeam, useRemoveTeamMember, useTeams, useUpdateTeamMemberRole } from "../../hooks/useTeams";
 import { useUpdateUserRole, useUsers } from "../../hooks/useUsers";
 import { useStallRules, useUpdateGlobalStallRule } from "../../hooks/useStallRules";

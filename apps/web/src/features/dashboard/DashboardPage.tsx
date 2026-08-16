@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { HORIZON_LABELS } from "@mapa-expansao/shared";
+import { HORIZON_LABELS } from "@myplanner/shared";
 import { useDashboard } from "../../hooks/useDashboard";
 import { useTeams } from "../../hooks/useTeams";
 import { Card } from "../../components/ui/Card";

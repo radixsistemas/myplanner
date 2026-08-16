@@ -1,4 +1,4 @@
-import { computeStallStatus, type StallResult } from "@mapa-expansao/shared";
+import { computeStallStatus, type StallResult } from "@myplanner/shared";
 import { getEffectiveRule } from "./stall-rules.service";
 
 /** Anexa o cálculo de estagnação a um item de roadmap, usando a regra efetiva (time > global). */

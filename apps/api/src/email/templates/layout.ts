@@ -8,7 +8,7 @@ export function wrapEmail(title: string, bodyHtml: string): string {
           <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
             <tr>
               <td style="background:#1e293b;padding:20px 32px;">
-                <span style="color:#ffffff;font-size:16px;font-weight:600;">Mapa de Expansão · Roadmap &amp; Projetos</span>
+                <span style="color:#ffffff;font-size:16px;font-weight:600;">MyPlanner · Roadmap &amp; Projetos</span>
               </td>
             </tr>
             <tr>

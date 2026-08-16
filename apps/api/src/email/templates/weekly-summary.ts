@@ -10,7 +10,7 @@ interface WeeklySummaryTemplateInput {
 }
 
 export function weeklySummaryTemplate(input: WeeklySummaryTemplateInput) {
-  const subject = "Resumo semanal · Mapa de Expansão";
+  const subject = "Resumo semanal · MyPlanner";
 
   const overdueList = input.overdueTasks.length
     ? `<ul style="padding-left:20px;margin:0 0 16px;">

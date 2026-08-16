@@ -1,5 +1,5 @@
 {
-  "name": "@mapa-expansao/web",
+  "name": "@myplanner/web",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@mapa-expansao/shared": "*",
+    "@myplanner/shared": "*",
     "@tanstack/react-query": "^5.59.0",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",

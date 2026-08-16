@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@mapa-expansao/shared";
-import type { ProjectStatus } from "@mapa-expansao/shared";
+import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@myplanner/shared";
+import type { ProjectStatus } from "@myplanner/shared";
 import { useDeleteProject, useProject, useUpdateProject } from "../../hooks/useProjects";
 import { Card } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";

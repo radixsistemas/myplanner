@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@mapa-expansao/shared";
+import { PRIORITY_LABELS, ROADMAP_STATUS_LABELS } from "@myplanner/shared";
 import { Badge } from "../ui/Badge";
 import { StallBadge } from "./StallBadge";
 import { priorityTone, roadmapStatusTone } from "../../lib/badge-tones";

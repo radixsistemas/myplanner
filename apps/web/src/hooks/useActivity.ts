@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { EntityType } from "@mapa-expansao/shared";
+import type { EntityType } from "@myplanner/shared";
 import { api } from "../lib/api";
 import type { ActivityEntry } from "../types/api";
 

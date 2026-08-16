@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { HORIZON_LABELS, ROADMAP_STATUS_LABELS } from "@mapa-expansao/shared";
-import type { Horizon, RoadmapStatus } from "@mapa-expansao/shared";
+import { HORIZON_LABELS, ROADMAP_STATUS_LABELS } from "@myplanner/shared";
+import type { Horizon, RoadmapStatus } from "@myplanner/shared";
 import { useRoadmapItems } from "../../hooks/useRoadmap";
 import { useTeams } from "../../hooks/useTeams";
 import { Select } from "../../components/ui/Input";

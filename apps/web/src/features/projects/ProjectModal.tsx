@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import type { Priority } from "@mapa-expansao/shared";
-import { PRIORITY_LABELS } from "@mapa-expansao/shared";
+import type { Priority } from "@myplanner/shared";
+import { PRIORITY_LABELS } from "@myplanner/shared";
 import { Modal } from "../../components/ui/Modal";
 import { Field } from "../../components/ui/Field";
 import { Input, Select, Textarea } from "../../components/ui/Input";

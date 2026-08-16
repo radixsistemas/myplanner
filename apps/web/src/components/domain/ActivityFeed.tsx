@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { EntityType } from "@mapa-expansao/shared";
+import type { EntityType } from "@myplanner/shared";
 import { useActivity, useAddComment } from "../../hooks/useActivity";
 import { Button } from "../ui/Button";
 import { Textarea } from "../ui/Input";

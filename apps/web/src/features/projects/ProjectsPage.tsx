@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { PROJECT_STATUS_LABELS } from "@mapa-expansao/shared";
-import type { ProjectStatus } from "@mapa-expansao/shared";
+import { PROJECT_STATUS_LABELS } from "@myplanner/shared";
+import type { ProjectStatus } from "@myplanner/shared";
 import { useProjects } from "../../hooks/useProjects";
 import { useTeams } from "../../hooks/useTeams";
 import { Select } from "../../components/ui/Input";

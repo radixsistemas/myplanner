@@ -1,5 +1,5 @@
-import { PRIORITY_LABELS, TASK_STATUSES, TASK_STATUS_LABELS } from "@mapa-expansao/shared";
-import type { TaskStatus } from "@mapa-expansao/shared";
+import { PRIORITY_LABELS, TASK_STATUSES, TASK_STATUS_LABELS } from "@myplanner/shared";
+import type { TaskStatus } from "@myplanner/shared";
 import { Card } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
 import { priorityTone } from "../../lib/badge-tones";

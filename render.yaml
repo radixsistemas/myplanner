@@ -1,12 +1,12 @@
 databases:
-  - name: mapa-expansao-db
+  - name: myplanner-db
     plan: free
     region: oregon
     postgresMajorVersion: "16"
 
 services:
   - type: web
-    name: mapa-expansao-api
+    name: myplanner-api
     runtime: node
     plan: free
     region: oregon
@@ -21,7 +21,7 @@ services:
         value: "3333"
       - key: DATABASE_URL
         fromDatabase:
-          name: mapa-expansao-db
+          name: myplanner-db
           property: connectionString
       - key: JWT_ACCESS_SECRET
         generateValue: true

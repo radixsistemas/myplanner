@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import type { Theme } from "@mapa-expansao/shared";
+import type { Theme } from "@myplanner/shared";
 import { useAuth } from "../../stores/auth-store";
 import { useTheme } from "../../stores/theme-store";
 import { useUpdateProfile } from "../../hooks/useUsers";

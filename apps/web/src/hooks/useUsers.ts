@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { GlobalRole, Theme } from "@mapa-expansao/shared";
+import type { GlobalRole, Theme } from "@myplanner/shared";
 import { api } from "../lib/api";
 import type { PublicUser, UserProfile } from "../types/api";
 

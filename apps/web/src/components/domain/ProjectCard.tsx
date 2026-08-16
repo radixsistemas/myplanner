@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@mapa-expansao/shared";
+import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@myplanner/shared";
 import { Card } from "../ui/Card";
 import { Badge } from "../ui/Badge";
 import { ProgressBar } from "../ui/ProgressBar";

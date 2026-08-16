@@ -1,4 +1,4 @@
-import { computeStallStatus, type StallResult } from "@mapa-expansao/shared";
+import { computeStallStatus, type StallResult } from "@myplanner/shared";
 import { prisma } from "../lib/prisma";
 import { getEffectiveRule } from "./stall-detection/stall-rules.service";
 import { publicUserSelect } from "../lib/selects";

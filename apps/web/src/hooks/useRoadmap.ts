@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { Horizon, Priority, RoadmapStatus } from "@mapa-expansao/shared";
+import type { Horizon, Priority, RoadmapStatus } from "@myplanner/shared";
 import { api } from "../lib/api";
 import type { RoadmapItem, RoadmapPhase } from "../types/api";
 

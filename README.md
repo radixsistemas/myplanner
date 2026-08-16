@@ -1,4 +1,4 @@
-# Mapa de Expansão — Roadmap & Gestão de Projetos
+# MyPlanner — Roadmap & Gestão de Projetos
 
 Sistema próprio de gestão de roadmap e projetos, construído do zero (sem integrações com Jira/Trello/Asana). Separa claramente:
 
@@ -8,8 +8,6 @@ Sistema próprio de gestão de roadmap e projetos, construído do zero (sem inte
 Um item de roadmap pode ser **promovido a projeto** quando começa a ser executado — o projeto criado mantém o vínculo com o item de roadmap de origem (histórico preservado).
 
 Inclui um motor de **detecção de estagnação**: cada item de roadmap e projeto tem sua tolerância de inatividade calculada proporcionalmente ao prazo, e o sistema alerta no dashboard e por e-mail quando algo fica parado além do esperado.
-
-> O conteúdo anterior deste repositório (formulário "Mapa de Expansão de Visão" com Google Sheets) foi preservado em [`legacy/`](legacy/).
 
 ## Stack
 
@@ -25,13 +23,12 @@ Inclui um motor de **detecção de estagnação**: cada item de roadmap e projet
 Monorepo com **npm workspaces**:
 
 ```
-mapa-expansao/
+myplanner/
 ├── apps/
 │   ├── api/     # Backend Express + Prisma
 │   └── web/     # Frontend React + Vite
 ├── packages/
 │   └── shared/  # Enums, tipos e a fórmula de estagnação, compartilhados entre api e web
-├── legacy/      # Conteúdo anterior do repositório (não relacionado)
 └── docker-compose.yml  # Postgres local para desenvolvimento
 ```
 
