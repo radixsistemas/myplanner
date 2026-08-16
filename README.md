@@ -168,6 +168,11 @@ O primeiro usuário registrado no sistema vira Admin automaticamente.
 | `npm run db:studio` | Abre o Prisma Studio para inspecionar o banco visualmente |
 | `npm run stall:check` | Roda a verificação de estagnação uma vez, manualmente |
 
+## Deploy
+
+Guia passo a passo para colocar em produção (Render para API + banco, Vercel para o
+frontend, deploy automático a cada push) em [`DEPLOY.md`](DEPLOY.md).
+
 ## Limitações conhecidas (v1)
 
 - Override de regra de estagnação por time é feito via API (`PUT /api/stall-rules/teams/:teamId`, permitido a gestores do time); a UI de administração expõe apenas a regra global.
