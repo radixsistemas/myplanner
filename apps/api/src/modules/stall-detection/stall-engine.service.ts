@@ -2,9 +2,7 @@ import { computeStallStatus } from "@myplanner/shared";
 import { prisma } from "../../lib/prisma";
 import { getEffectiveRule } from "./stall-rules.service";
 import { notifyStalled } from "../notifications/notifications.service";
-
-const ACTIVE_ROADMAP_STATUSES = ["PLANEJADO", "EM_ANALISE", "INICIADO", "PAUSADO"] as const;
-const ACTIVE_PROJECT_STATUSES = ["ACTIVE", "ON_HOLD"] as const;
+import { ACTIVE_PROJECT_STATUSES, ACTIVE_ROADMAP_STATUSES } from "./stall-status";
 
 export interface StallScanResult {
   checked: number;

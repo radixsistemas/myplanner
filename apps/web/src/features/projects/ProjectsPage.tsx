@@ -13,12 +13,14 @@ import { ProjectModal } from "./ProjectModal";
 export function ProjectsPage() {
   const [teamId, setTeamId] = useState("");
   const [status, setStatus] = useState<ProjectStatus | "">("");
+  const [archived, setArchived] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { data: teams } = useTeams();
   const { data: projects, isLoading } = useProjects({
     teamId: teamId || undefined,
     status: status || undefined,
+    archived,
   });
 
   return (
@@ -26,9 +28,27 @@ export function ProjectsPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Projetos</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Execução do dia a dia</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            {archived ? "Projetos arquivados" : "Execução do dia a dia"}
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <div className="flex rounded-md border border-slate-200 p-0.5 dark:border-slate-700">
+            <button
+              type="button"
+              onClick={() => setArchived(false)}
+              className={`rounded px-3 py-1 text-xs font-medium ${!archived ? "bg-brand-600 text-white" : "text-slate-600 dark:text-slate-300"}`}
+            >
+              Ativos
+            </button>
+            <button
+              type="button"
+              onClick={() => setArchived(true)}
+              className={`rounded px-3 py-1 text-xs font-medium ${archived ? "bg-brand-600 text-white" : "text-slate-600 dark:text-slate-300"}`}
+            >
+              Arquivados
+            </button>
+          </div>
           <Select value={teamId} onChange={(e) => setTeamId(e.target.value)} className="w-44">
             <option value="">Todos os times</option>
             {teams?.map((team) => (
@@ -45,7 +65,7 @@ export function ProjectsPage() {
               </option>
             ))}
           </Select>
-          <Button onClick={() => setModalOpen(true)}>+ Novo projeto</Button>
+          {!archived && <Button onClick={() => setModalOpen(true)}>+ Novo projeto</Button>}
         </div>
       </div>
 
@@ -53,9 +73,13 @@ export function ProjectsPage() {
         <FullPageSpinner />
       ) : projects.length === 0 ? (
         <EmptyState
-          title="Nenhum projeto"
-          description="Crie um projeto do zero ou converta um item de roadmap."
-          action={<Button onClick={() => setModalOpen(true)}>+ Novo projeto</Button>}
+          title={archived ? "Nenhum projeto arquivado" : "Nenhum projeto"}
+          description={
+            archived
+              ? "Projetos arquivados aparecem aqui. Arquive um projeto na página de detalhe dele."
+              : "Crie um projeto do zero ou converta um item de roadmap."
+          }
+          action={!archived && <Button onClick={() => setModalOpen(true)}>+ Novo projeto</Button>}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

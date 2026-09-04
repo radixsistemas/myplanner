@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { PRIORITY_LABELS, PROJECT_STATUS_LABELS } from "@myplanner/shared";
 import type { ProjectStatus } from "@myplanner/shared";
-import { useDeleteProject, useProject, useUpdateProject } from "../../hooks/useProjects";
+import {
+  useArchiveProject,
+  useDeleteProject,
+  useProject,
+  useUnarchiveProject,
+  useUpdateProject,
+} from "../../hooks/useProjects";
 import { Card } from "../../components/ui/Card";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
@@ -13,6 +19,7 @@ import { StallBadge } from "../../components/domain/StallBadge";
 import { ActivityFeed } from "../../components/domain/ActivityFeed";
 import { priorityTone, projectStatusTone } from "../../lib/badge-tones";
 import { formatDate } from "../../lib/format";
+import { getApiErrorMessage } from "../../lib/api";
 import { TaskListView } from "./TaskListView";
 import { TaskKanbanView } from "./TaskKanbanView";
 import { TaskModal } from "./TaskModal";
@@ -24,9 +31,12 @@ export function ProjectDetailPage() {
   const { data: project, isLoading } = useProject(id);
   const updateProject = useUpdateProject(id ?? "");
   const deleteProject = useDeleteProject();
+  const archiveProject = useArchiveProject();
+  const unarchiveProject = useUnarchiveProject();
 
   const [view, setView] = useState<"list" | "kanban">("list");
   const [taskModal, setTaskModal] = useState<{ task?: Task; parentTaskId?: string } | null>(null);
+  const [archiveError, setArchiveError] = useState<string | null>(null);
 
   if (isLoading || !project) return <FullPageSpinner />;
 
@@ -40,6 +50,20 @@ export function ProjectDetailPage() {
     navigate("/projects");
   }
 
+  async function handleToggleArchive() {
+    if (!id || !project) return;
+    setArchiveError(null);
+    try {
+      if (project.archivedAt) {
+        await unarchiveProject.mutateAsync(id);
+      } else {
+        await archiveProject.mutateAsync(id);
+      }
+    } catch (err) {
+      setArchiveError(getApiErrorMessage(err));
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -47,6 +71,7 @@ export function ProjectDetailPage() {
           <div className="mb-1 flex items-center gap-2">
             <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{project.title}</h1>
             <Badge tone={projectStatusTone[project.status]}>{PROJECT_STATUS_LABELS[project.status]}</Badge>
+            {project.archivedAt && <Badge tone="slate">Arquivado</Badge>}
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {project.team.name} · Responsável: {project.owner.name}
@@ -77,11 +102,21 @@ export function ProjectDetailPage() {
               </option>
             ))}
           </Select>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleToggleArchive}
+            disabled={archiveProject.isPending || unarchiveProject.isPending}
+          >
+            {project.archivedAt ? "Desarquivar" : "Arquivar"}
+          </Button>
           <Button variant="danger" size="sm" onClick={handleDelete}>
             Excluir
           </Button>
         </div>
       </div>
+
+      {archiveError && <p className="text-sm text-red-600 dark:text-red-400">{archiveError}</p>}
 
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone={priorityTone[project.priority]}>{PRIORITY_LABELS[project.priority]}</Badge>

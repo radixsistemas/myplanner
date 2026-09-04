@@ -32,12 +32,13 @@ export async function computeProjectProgress(projectId: string): Promise<number>
 
 export async function listProjects(
   user: AuthenticatedUser,
-  filters: { teamId?: string; status?: string; ownerId?: string },
+  filters: { teamId?: string; status?: string; ownerId?: string; archived?: boolean },
 ) {
   const teamScope = await resolveTeamScope(user, filters.teamId);
   const projects = await prisma.project.findMany({
     where: {
       ...teamScope,
+      archivedAt: filters.archived ? { not: null } : null,
       ...(filters.status ? { status: filters.status as never } : {}),
       ...(filters.ownerId ? { ownerId: filters.ownerId } : {}),
     },
@@ -133,4 +134,38 @@ export async function deleteProject(user: AuthenticatedUser, id: string) {
   if (!existing) throw HttpError.notFound("Projeto não encontrado");
   await assertCanManageTeam(user, existing.teamId);
   await prisma.project.delete({ where: { id } });
+}
+
+export async function archiveProject(user: AuthenticatedUser, id: string) {
+  const existing = await prisma.project.findUnique({ where: { id } });
+  if (!existing) throw HttpError.notFound("Projeto não encontrado");
+  await assertCanManageTeam(user, existing.teamId);
+  if (existing.archivedAt) return existing;
+
+  const updated = await prisma.project.update({ where: { id }, data: { archivedAt: new Date() } });
+  await recordActivity({
+    entityType: "PROJECT",
+    entityId: id,
+    userId: user.id,
+    type: "FIELD_UPDATE",
+    body: "Projeto arquivado",
+  });
+  return updated;
+}
+
+export async function unarchiveProject(user: AuthenticatedUser, id: string) {
+  const existing = await prisma.project.findUnique({ where: { id } });
+  if (!existing) throw HttpError.notFound("Projeto não encontrado");
+  await assertCanManageTeam(user, existing.teamId);
+  if (!existing.archivedAt) return existing;
+
+  const updated = await prisma.project.update({ where: { id }, data: { archivedAt: null } });
+  await recordActivity({
+    entityType: "PROJECT",
+    entityId: id,
+    userId: user.id,
+    type: "FIELD_UPDATE",
+    body: "Projeto desarquivado",
+  });
+  return updated;
 }

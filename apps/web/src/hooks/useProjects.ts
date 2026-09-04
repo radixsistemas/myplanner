@@ -7,6 +7,7 @@ export interface ProjectFilters {
   teamId?: string;
   status?: ProjectStatus;
   ownerId?: string;
+  archived?: boolean;
 }
 
 export function useProjects(filters: ProjectFilters = {}) {
@@ -59,6 +60,22 @@ export function useDeleteProject() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => api.delete(`/projects/${id}`),
+    onSuccess: () => invalidateProjects(qc),
+  });
+}
+
+export function useArchiveProject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => (await api.post<Project>(`/projects/${id}/archive`)).data,
+    onSuccess: () => invalidateProjects(qc),
+  });
+}
+
+export function useUnarchiveProject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => (await api.post<Project>(`/projects/${id}/unarchive`)).data,
     onSuccess: () => invalidateProjects(qc),
   });
 }

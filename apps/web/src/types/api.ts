@@ -133,6 +133,7 @@ export interface Project {
   targetDate: string | null;
   startedAt: string;
   lastActivityAt: string;
+  archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
   owner: PublicUser;

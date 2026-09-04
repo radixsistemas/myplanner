@@ -22,6 +22,11 @@ export const listProjectsQuerySchema = z.object({
   teamId: z.string().optional(),
   status: z.enum(["ACTIVE", "ON_HOLD", "COMPLETED", "CANCELLED"]).optional(),
   ownerId: z.string().optional(),
+  // z.coerce.boolean() trataria a string "false" (não vazia) como true; comparamos o valor bruto.
+  archived: z
+    .union([z.boolean(), z.string()])
+    .optional()
+    .transform((value) => value === true || value === "true"),
 });
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;

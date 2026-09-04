@@ -45,3 +45,17 @@ projectsRouter.delete(
     res.status(204).send();
   }),
 );
+
+projectsRouter.post(
+  "/:id/archive",
+  asyncHandler(async (req, res) => {
+    res.json(await projectsService.archiveProject(req.user!, req.params.id));
+  }),
+);
+
+projectsRouter.post(
+  "/:id/unarchive",
+  asyncHandler(async (req, res) => {
+    res.json(await projectsService.unarchiveProject(req.user!, req.params.id));
+  }),
+);

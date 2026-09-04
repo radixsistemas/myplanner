@@ -1,6 +1,7 @@
 import { computeStallStatus, type StallResult } from "@myplanner/shared";
 import { prisma } from "../lib/prisma";
 import { getEffectiveRule } from "./stall-detection/stall-rules.service";
+import { ACTIVE_PROJECT_STATUSES, ACTIVE_ROADMAP_STATUSES } from "./stall-detection/stall-status";
 import { publicUserSelect } from "../lib/selects";
 import type { AuthenticatedUser } from "../middleware/auth";
 
@@ -43,7 +44,7 @@ export async function getDashboard(user: AuthenticatedUser, filters: DashboardFi
       orderBy: { targetDate: "asc" },
     }),
     prisma.project.findMany({
-      where: { ...teamWhere, ...(filters.ownerId ? { ownerId: filters.ownerId } : {}) },
+      where: { ...teamWhere, archivedAt: null, ...(filters.ownerId ? { ownerId: filters.ownerId } : {}) },
       include: {
         owner: { select: publicUserSelect },
         team: true,
@@ -64,36 +65,43 @@ export async function getDashboard(user: AuthenticatedUser, filters: DashboardFi
 
   const roadmapWithStall = await Promise.all(
     roadmapItems.map(async (item) => {
+      if (!(ACTIVE_ROADMAP_STATUSES as readonly string[]).includes(item.status)) {
+        return { ...item, stall: undefined as StallResult | undefined };
+      }
       const rule = await ruleFor(item.teamId);
       const stall = computeStallStatus(
         { startDate: item.createdAt, targetDate: item.targetDate, lastActivityAt: item.lastActivityAt },
         rule,
       );
-      return { ...item, stall };
+      return { ...item, stall: stall as StallResult | undefined };
     }),
   );
 
   const projectsWithStall = await Promise.all(
     projects.map(async (project) => {
+      const progressPercent = project.tasks.length
+        ? Math.round(project.tasks.reduce((sum, t) => sum + t.progressPercent, 0) / project.tasks.length)
+        : 0;
+      const { tasks: _tasks, ...rest } = project;
+
+      if (!(ACTIVE_PROJECT_STATUSES as readonly string[]).includes(project.status)) {
+        return { ...rest, stall: undefined as StallResult | undefined, progressPercent };
+      }
       const rule = await ruleFor(project.teamId);
       const stall = computeStallStatus(
         { startDate: project.startedAt, targetDate: project.targetDate, lastActivityAt: project.lastActivityAt },
         rule,
       );
-      const progressPercent = project.tasks.length
-        ? Math.round(project.tasks.reduce((sum, t) => sum + t.progressPercent, 0) / project.tasks.length)
-        : 0;
-      const { tasks: _tasks, ...rest } = project;
-      return { ...rest, stall, progressPercent };
+      return { ...rest, stall: stall as StallResult | undefined, progressPercent };
     }),
   );
 
   const stalledItems: Array<{ type: "ROADMAP_ITEM" | "PROJECT"; id: string; title: string } & StallResult> = [
     ...roadmapWithStall
-      .filter((item) => item.stall.isStalled)
+      .filter((item): item is typeof item & { stall: StallResult } => !!item.stall?.isStalled)
       .map((item) => ({ type: "ROADMAP_ITEM" as const, id: item.id, title: item.title, ...item.stall })),
     ...projectsWithStall
-      .filter((project) => project.stall.isStalled)
+      .filter((project): project is typeof project & { stall: StallResult } => !!project.stall?.isStalled)
       .map((project) => ({ type: "PROJECT" as const, id: project.id, title: project.title, ...project.stall })),
   ];
 
