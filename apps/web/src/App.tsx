@@ -8,6 +8,7 @@ import { RoadmapPage } from "./features/roadmap/RoadmapPage";
 import { RoadmapItemDetailPage } from "./features/roadmap/RoadmapItemDetailPage";
 import { ProjectsPage } from "./features/projects/ProjectsPage";
 import { ProjectDetailPage } from "./features/projects/ProjectDetailPage";
+import { MyChecklistPage } from "./features/checklist/MyChecklistPage";
 import { SettingsPage } from "./features/settings/SettingsPage";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/roadmap/:id" element={<RoadmapItemDetailPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:id" element={<ProjectDetailPage />} />
+          <Route path="/checklist" element={<MyChecklistPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>

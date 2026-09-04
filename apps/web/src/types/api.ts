@@ -144,6 +144,17 @@ export interface Project {
   stall?: StallResult;
 }
 
+export interface ChecklistItem {
+  id: string;
+  userId: string;
+  title: string;
+  completed: boolean;
+  completedAt: string | null;
+  position: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ActivityEntry {
   id: string;
   entityType: EntityType;

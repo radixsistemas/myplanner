@@ -12,6 +12,7 @@ import { tasksRouter } from "./modules/tasks/tasks.routes";
 import { activityRouter } from "./modules/activity/activity.routes";
 import { stallRulesRouter } from "./modules/stall-detection/stall-rules.routes";
 import { dashboardRouter } from "./modules/dashboard.routes";
+import { checklistRouter } from "./modules/checklist/checklist.routes";
 
 export const app = express();
 
@@ -32,6 +33,7 @@ app.use("/api/tasks", tasksRouter);
 app.use("/api/activity", activityRouter);
 app.use("/api/stall-rules", stallRulesRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/checklist", checklistRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

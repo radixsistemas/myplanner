@@ -7,6 +7,7 @@ const navItems = [
   { to: "/", label: "Dashboard", end: true },
   { to: "/roadmap", label: "Roadmap", end: false },
   { to: "/projects", label: "Projetos", end: false },
+  { to: "/checklist", label: "Meu Checklist", end: false },
   { to: "/settings", label: "Configurações", end: false },
 ];
 
