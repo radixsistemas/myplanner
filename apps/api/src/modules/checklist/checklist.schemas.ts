@@ -12,7 +12,11 @@ export const updateChecklistItemSchema = z
   .refine((data) => Object.keys(data).length > 0, { message: "Nenhum campo para atualizar" });
 
 export const listChecklistItemsQuerySchema = z.object({
-  includeCompleted: z.coerce.boolean().optional().default(false),
+  // z.coerce.boolean() trataria a string "false" (não vazia) como true; comparamos o valor bruto.
+  includeCompleted: z
+    .union([z.boolean(), z.string()])
+    .optional()
+    .transform((value) => value === true || value === "true"),
 });
 
 export type CreateChecklistItemInput = z.infer<typeof createChecklistItemSchema>;

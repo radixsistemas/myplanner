@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Card } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { Spinner } from "../../components/ui/Spinner";
+import { getApiErrorMessage } from "../../lib/api";
 import {
   useChecklistItems,
   useCreateChecklistItem,
@@ -14,17 +15,23 @@ import {
 export function MyChecklistPage() {
   const [showCompleted, setShowCompleted] = useState(false);
   const [title, setTitle] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const { data: items, isLoading } = useChecklistItems(showCompleted);
   const createItem = useCreateChecklistItem();
   const updateItem = useUpdateChecklistItem();
   const deleteItem = useDeleteChecklistItem();
 
-  function handleCreate(e: React.FormEvent) {
+  async function handleCreate(e: FormEvent) {
     e.preventDefault();
     const trimmed = title.trim();
     if (!trimmed) return;
-    createItem.mutate(trimmed);
-    setTitle("");
+    setError(null);
+    try {
+      await createItem.mutateAsync(trimmed);
+      setTitle("");
+    } catch (err) {
+      setError(getApiErrorMessage(err));
+    }
   }
 
   function handleDelete(id: string) {
@@ -61,6 +68,7 @@ export function MyChecklistPage() {
             + Adicionar
           </Button>
         </form>
+        {error && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
       </Card>
 
       <section>
