@@ -13,6 +13,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "stall:check": "tsx src/jobs/runStallCheckOnce.ts",
+    "fix:done-task-progress": "tsx src/scripts/fix-done-task-progress.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "prisma": {

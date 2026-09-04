@@ -127,7 +127,9 @@ export async function updateTask(user: AuthenticatedUser, id: string, input: Upd
   await assertCanEditTask(user, existing, existing.project.teamId, Object.keys(input));
 
   const data: UpdateTaskInput = { ...input };
-  if (input.status === "DONE" && existing.status !== "DONE" && data.progressPercent === undefined) {
+  // Concluída sempre significa 100%, mesmo que o formulário tenha enviado um progressPercent
+  // desatualizado junto (ex: o slider não foi mexido ao marcar a tarefa como concluída).
+  if (input.status === "DONE") {
     data.progressPercent = 100;
   }
 

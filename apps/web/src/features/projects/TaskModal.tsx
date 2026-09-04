@@ -129,7 +129,14 @@ export function TaskModal({ open, onClose, projectId, task, parentTaskId }: Task
           </Field>
           {isEditing && (
             <Field label="Status">
-              <Select value={status} onChange={(e) => setStatus(e.target.value as TaskStatus)}>
+              <Select
+                value={status}
+                onChange={(e) => {
+                  const nextStatus = e.target.value as TaskStatus;
+                  setStatus(nextStatus);
+                  if (nextStatus === "DONE") setProgressPercent(100);
+                }}
+              >
                 {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
                   <option key={value} value={value}>
                     {label}
